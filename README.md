@@ -31,7 +31,7 @@ A **practical, code-first** blockchain course for developers who know JavaScript
 - Want deep cryptography/math
 - Only interested in Solidity programming
 - Looking for trading/investment advice
-- Want instant wealth (this is about skills!)
+
 
 ---
 
@@ -231,8 +231,8 @@ Each chapter has copy-paste code examples!
 ### If You Get Stuck:
 1. Re-read the section
 2. Run the example code
-3. Google the error message
-4. Check Stack Overflow
+3. GPT the error message
+4. Check Stack Overflow OR LLMS
 5. Keep going! (everyone struggles sometimes)
 
 ### Time Management:
@@ -243,27 +243,7 @@ Each chapter has copy-paste code examples!
 
 ---
 
-## 🤔 FAQ
 
-**Q: Do I need to learn Solidity?**  
-A: Not initially! 95% of blockchain developers use existing contracts. Learn JavaScript interaction first, Solidity later if needed.
-
-**Q: Is blockchain hard?**  
-A: Not if you know JavaScript! It's just arrays + hashing + APIs.
-
-**Q: How long to become job-ready?**  
-A: 2-4 weeks of focused learning + building 2-3 projects.
-
-**Q: Can I make money from this?**  
-A: Yes! After completing the course + building projects, you can freelance or apply for jobs.
-
-**Q: Do I need crypto/Bitcoin to learn?**  
-A: No! You can use testnets (free fake money) to learn.
-
-**Q: Is this only for Ethereum?**  
-A: Concepts apply to all blockchains. Code examples use Ethereum because it's most popular.
-
----
 
 ## 📖 Additional Resources
 
