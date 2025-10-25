@@ -66,7 +66,7 @@ Interact with contracts using JavaScript
 - Read/write contracts with Ethers.js
 - Connect MetaMask
 - Handle errors
-- [Start Chapter 04 →](Chapters/Chapter-04-Solidity-Basics.md)
+- [Start Chapter 04 →](Chapters/Chapter-04-JavaScript-DApp-Development.md)
 
 ### **Chapter 05: Advanced Tools** (60 min)
 Level up with modern Web3 tools
@@ -178,7 +178,7 @@ BlockChain/
 │   ├── Chapter-01-Blockchain-Fundamentals.md
 │   ├── Chapter-02-Cryptocurrencies-Bitcoin.md
 │   ├── Chapter-03-Ethereum-Smart-Contracts.md
-│   ├── Chapter-04-Solidity-Basics.md
+│   ├── Chapter-04-JavaScript-DApp-Development.md
 │   ├── Chapter-05-Intermediate-Solidity.md
 │   ├── Chapter-06-Full-Stack-DApps.md
 │   └── Chapter-07-Advanced-DeFi-DePIN.md

@@ -771,7 +771,156 @@ contract ProductionContract is ReentrancyGuard, AccessControl, Pausable {
 
 ---
 
-## 📝 Chapter Summary
+## �️ Let's Code: DeFi Interaction!
+
+**Let's interact with REAL DeFi protocols!** Run in browser console (F12):
+
+```javascript
+// Load Ethers.js
+const script = document.createElement('script');
+script.src = 'https://cdn.ethers.io/lib/ethers-5.7.umd.min.js';
+document.head.appendChild(script);
+await new Promise(resolve => script.onload = resolve);
+
+// Connect to Ethereum
+const provider = new ethers.providers.JsonRpcProvider('https://eth.llamarpc.com');
+```
+
+---
+
+### 💰 Check Uniswap Liquidity Pools
+
+```javascript
+// Uniswap V3 Factory Contract
+const UNISWAP_FACTORY = '0x1F98431c8aD98523631AE4a59f267346ea31F984';
+const FACTORY_ABI = [
+  'function getPool(address tokenA, address tokenB, uint24 fee) view returns (address pool)'
+];
+
+const factory = new ethers.Contract(UNISWAP_FACTORY, FACTORY_ABI, provider);
+
+// Get ETH/USDC pool (0.3% fee tier)
+const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+
+const poolAddress = await factory.getPool(WETH, USDC, 3000); // 3000 = 0.3%
+console.log('💦 ETH/USDC Pool:', poolAddress);
+
+// Now read pool data
+const POOL_ABI = [
+  'function slot0() view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked)',
+  'function liquidity() view returns (uint128)',
+  'function token0() view returns (address)',
+  'function token1() view returns (address)'
+];
+
+const pool = new ethers.Contract(poolAddress, POOL_ABI, provider);
+
+const liquidity = await pool.liquidity();
+const slot0 = await pool.slot0();
+
+console.log('💧 Pool Liquidity:', liquidity.toString());
+console.log('📊 Current Tick:', slot0.tick);
+```
+
+---
+
+### 🏦 Check Aave Lending Stats
+
+```javascript
+// Aave V3 Pool (Ethereum Mainnet)
+const AAVE_POOL = '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2';
+const POOL_ABI = [
+  'function getReserveData(address asset) view returns (tuple(uint256 availableLiquidity, uint256 totalStableDebt, uint256 totalVariableDebt, uint256 liquidityRate, uint256 variableBorrowRate, uint256 stableBorrowRate, uint256 averageStableBorrowRate, uint256 liquidityIndex, uint256 variableBorrowIndex, uint40 lastUpdateTimestamp) data)'
+];
+
+const aavePool = new ethers.Contract(AAVE_POOL, POOL_ABI, provider);
+
+// Check USDC lending stats
+const USDC_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+const reserveData = await aavePool.getReserveData(USDC_ADDRESS);
+
+console.log('🏦 Aave USDC Stats:');
+console.log('  Available:', ethers.utils.formatUnits(reserveData.availableLiquidity, 6), 'USDC');
+console.log('  Total Borrowed:', ethers.utils.formatUnits(reserveData.totalVariableDebt, 6), 'USDC');
+console.log('  Lending APY:', (reserveData.liquidityRate / 1e25).toFixed(2), '%');
+console.log('  Borrow APY:', (reserveData.variableBorrowRate / 1e25).toFixed(2), '%');
+```
+
+---
+
+### 📊 Track Top DeFi Tokens
+
+```javascript
+// Check balances of major DeFi tokens
+const ERC20_ABI = [
+  'function totalSupply() view returns (uint256)',
+  'function balanceOf(address) view returns (uint256)',
+  'function decimals() view returns (uint8)'
+];
+
+async function getTokenStats(address, symbol, decimals) {
+  const token = new ethers.Contract(address, ERC20_ABI, provider);
+  
+  const totalSupply = await token.totalSupply();
+  const price = await fetch(`https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${address}&vs_currencies=usd`)
+    .then(r => r.json());
+  
+  const priceUSD = price[address.toLowerCase()]?.usd || 0;
+  const supplyFormatted = parseFloat(ethers.utils.formatUnits(totalSupply, decimals));
+  const marketCap = supplyFormatted * priceUSD;
+  
+  return {
+    symbol,
+    totalSupply: supplyFormatted.toLocaleString(),
+    price: `$${priceUSD}`,
+    marketCap: `$${marketCap.toLocaleString()}`
+  };
+}
+
+// Check major DeFi tokens
+const tokens = [
+  { address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', symbol: 'UNI', decimals: 18 }, // Uniswap
+  { address: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9', symbol: 'AAVE', decimals: 18 }, // Aave
+  { address: '0x6B175474E89094C44Da98b954EedeAC495271d0F', symbol: 'DAI', decimals: 18 }  // DAI
+];
+
+for (const token of tokens) {
+  const stats = await getTokenStats(token.address, token.symbol, token.decimals);
+  console.table(stats);
+}
+```
+
+**Understanding:** You're reading real data from major DeFi protocols - Uniswap (DEX) and Aave (lending).
+
+---
+
+## 🧪 Practice Exercises
+
+**Open your browser console and:**
+
+1. **Query Uniswap pools** - Type Step 1 code, see real liquidity
+2. **Check Aave rates** - Type Step 2 code, compare lending/borrowing APYs
+3. **Track DeFi tokens** - Type Step 3 code, monitor prices and market caps
+4. **Explore other protocols** - Find contract addresses, replace and query!
+
+**Learn by experimenting:** Type each line, add console.logs, understand DeFi mechanics!
+
+---
+
+## 🧠 What You Learned
+
+**You coded:**
+- ✅ Uniswap pool data reader (real liquidity!)
+- ✅ Aave lending statistics tracker (APYs!)
+- ✅ DeFi token monitor (prices + market caps)
+- ✅ Multi-protocol interaction (one script!)
+
+**That's advanced DeFi development!** 🚀
+
+---
+
+## �📝 Chapter Summary
 
 **Key Takeaways:**
 
@@ -846,5 +995,4 @@ contract ProductionContract is ReentrancyGuard, AccessControl, Pausable {
 
 ---
 
-*Last Updated: October 25, 2025*
-*Blockchain Learning Series for Beginners*
+*Chapter 7/8 • You're Ready for the Future! 🌟*

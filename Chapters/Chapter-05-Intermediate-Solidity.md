@@ -2,7 +2,7 @@
 
 **Hey!** Ready to go pro? Let's add real-time updates, batching, and React hooks! 🚀
 
-[← Chapter 04](Chapter-04-Solidity-Basics.md) | [Index](../Index.md) | [Next: Full DApp →](Chapter-06-Full-Stack-DApps.md)
+[← Chapter 04](Chapter-04-JavaScript-DApp-Development.md) | [Index](../Index.md) | [Next: Full DApp →](Chapter-06-Full-Stack-DApps.md)
 
 ---
 
@@ -616,9 +616,9 @@ console.log('USDC:', formatUnits(usdcBalance, 6));
 
 ---
 
-[← Chapter 04](Chapter-04-Solidity-Basics.md) | [Index](../Index.md) | [Next: Full-Stack DApps →](Chapter-06-Full-Stack-DApps.md)
+[← Chapter 04](Chapter-04-JavaScript-DApp-Development.md) | [Index](../Index.md) | [Next: Full-Stack DApps →](Chapter-06-Full-Stack-DApps.md)
 
-*Chapter 5/7 • For JavaScript Developers • Oct 2025*
+*Chapter 5/8 • Level Up Your Skills! 🛠️*
         emit OwnershipTransferred(owner, newOwner);
         owner = newOwner;
     }
@@ -1935,7 +1935,7 @@ contract Safe {
 
 ---
 
-[← Previous](Chapter-04-Solidity-Basics.md) | [Index](../Index.md) | [Next Chapter →](Chapter-06-Full-Stack-DApps.md)
+[← Previous](Chapter-04-JavaScript-DApp-Development.md) | [Index](../Index.md) | [Next Chapter →](Chapter-06-Full-Stack-DApps.md)
 
 ---
 

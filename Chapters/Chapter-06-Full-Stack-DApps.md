@@ -2107,5 +2107,4 @@ npm run dev
 
 ---
 
-*Last Updated: October 25, 2025*
-*Blockchain Learning Series for Beginners*
+*Chapter 6/8 • Build Real DApps! 🖥️*

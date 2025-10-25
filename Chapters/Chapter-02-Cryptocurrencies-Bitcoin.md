@@ -432,7 +432,214 @@ const supplyDemand = {
 
 ---
 
-## 📝 TL;DR (Quick Summary)
+## �️ Let's Code: Track Real Bitcoin!
+
+**Now let's interact with REAL Bitcoin blockchain!** No server needed - run in browser console (F12):
+
+```javascript
+// Step 1: Fetch Bitcoin price (CoinGecko free API)
+async function getBitcoinPrice() {
+  const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+  const data = await response.json();
+  return data.bitcoin.usd;
+}
+
+// Try it!
+const price = await getBitcoinPrice();
+console.log(`💰 Current Bitcoin Price: $${price.toLocaleString()}`);
+```
+
+**Understanding:** This uses a public API to get real-time Bitcoin price data. No authentication needed!
+
+---
+
+### Step 2: Calculate Bitcoin Worth
+
+```javascript
+// Step 2: Calculate what Bitcoin amount is worth
+async function calculateWorth(btcAmount) {
+  const price = await getBitcoinPrice();
+  const worth = btcAmount * price;
+  
+  return {
+    btc: btcAmount,
+    usd: worth,
+    formatted: `${btcAmount} BTC = $${worth.toLocaleString()}`
+  };
+}
+
+// Try different amounts:
+await calculateWorth(1);      // 1 whole Bitcoin
+await calculateWorth(0.01);   // 0.01 BTC (what most people own!)
+await calculateWorth(0.001);  // Small amount
+```
+
+**Understanding:** This shows you how to convert between BTC and USD using current market prices.
+
+---
+
+### Step 3: Simulate a Transaction
+
+```javascript
+// Step 3: Simulate Bitcoin transaction with UTXO model
+class BitcoinWallet {
+  constructor() {
+    this.utxos = [
+      { id: 'tx1', amount: 0.5 },
+      { id: 'tx2', amount: 0.3 },
+      { id: 'tx3', amount: 0.2 }
+    ];
+  }
+  
+  getBalance() {
+    return this.utxos.reduce((sum, utxo) => sum + utxo.amount, 0);
+  }
+  
+  send(toAddress, amount) {
+    const balance = this.getBalance();
+    const fee = 0.0001; // Mining fee
+    const total = amount + fee;
+    
+    if (total > balance) {
+      return { error: 'Insufficient funds!' };
+    }
+    
+    // Find UTXOs to spend
+    let collected = 0;
+    const utxosToSpend = [];
+    
+    for (const utxo of this.utxos) {
+      if (collected >= total) break;
+      utxosToSpend.push(utxo);
+      collected += utxo.amount;
+    }
+    
+    // Calculate change
+    const change = collected - total;
+    
+    const transaction = {
+      inputs: utxosToSpend,
+      outputs: [
+        { address: toAddress, amount: amount },
+        { address: 'MyAddress', amount: change },
+        { address: 'MinerAddress', amount: fee }
+      ],
+      summary: `Send ${amount} BTC to ${toAddress}, ${change.toFixed(4)} BTC change, ${fee} BTC fee`
+    };
+    
+    // Update wallet (remove spent UTXOs, add change)
+    this.utxos = this.utxos.filter(u => !utxosToSpend.includes(u));
+    if (change > 0) {
+      this.utxos.push({ id: 'change_tx', amount: change });
+    }
+    
+    return transaction;
+  }
+}
+
+// Try it!
+const wallet = new BitcoinWallet();
+console.log('Balance:', wallet.getBalance(), 'BTC');
+
+const tx = wallet.send('Bob', 0.4);
+console.log('Transaction:', tx);
+console.log('New Balance:', wallet.getBalance(), 'BTC');
+```
+
+**Understanding:** This demonstrates the UTXO model - you spend entire "bills" and get change back!
+
+---
+
+### Step 4: Query Real Bitcoin Blockchain
+
+```javascript
+// Check real Bitcoin blockchain data (using Blockchain.info API)
+async function getBitcoinStats() {
+  const response = await fetch('https://blockchain.info/stats?format=json');
+  const stats = await response.json();
+  
+  return {
+    totalBTC: (stats.totalbc / 100000000).toFixed(2),
+    marketPrice: stats.market_price_usd,
+    transactionsToday: stats.n_tx.toLocaleString(),
+    minutesBetweenBlocks: stats.minutes_between_blocks,
+    difficulty: stats.difficulty.toExponential(2),
+    summary: `
+      💰 Total Bitcoin mined: ${(stats.totalbc / 100000000).toFixed(2)} BTC
+      📈 Current price: $${stats.market_price_usd.toLocaleString()}
+      📊 Transactions today: ${stats.n_tx.toLocaleString()}
+      ⏰ Block time: ~${stats.minutes_between_blocks} minutes
+    `
+  };
+}
+
+const bitcoinStats = await getBitcoinStats();
+console.log(bitcoinStats.summary);
+```
+
+**Understanding:** This connects to actual Bitcoin blockchain via public APIs - you're querying real data!
+
+---
+
+## 🧪 Practice Exercises
+
+**Open your browser console and:**
+
+1. **Check current Bitcoin price** - Type Step 1 code, see live data
+2. **Calculate wealth** - If you had 0.5 BTC, how much in USD?
+3. **Build transactions** - Try sending different amounts with the wallet
+4. **Break the wallet** - Try sending more than you have (see error handling!)
+5. **Check blockchain stats** - Type Step 4 code, see real metrics
+
+**Learn by experimenting:** Type each line, add console.logs, understand the flow!
+
+---
+
+### 🔍 Query Real Bitcoin Blockchain
+
+```javascript
+// Step 4: Check real Bitcoin blockchain data (using Blockchain.info API)
+async function getBitcoinStats() {
+  const response = await fetch('https://blockchain.info/stats?format=json');
+  const stats = await response.json();
+  
+  return {
+    totalBTC: (stats.totalbc / 100000000).toFixed(2), // Convert satoshis to BTC
+    marketPrice: stats.market_price_usd,
+    transactionsToday: stats.n_tx.toLocaleString(),
+    minutesBetweenBlocks: stats.minutes_between_blocks,
+    difficulty: stats.difficulty.toExponential(2),
+    summary: `
+      💰 Total Bitcoin mined: ${(stats.totalbc / 100000000).toFixed(2)} BTC
+      📈 Current price: $${stats.market_price_usd.toLocaleString()}
+      📊 Transactions today: ${stats.n_tx.toLocaleString()}
+      ⏰ Block time: ~${stats.minutes_between_blocks} minutes
+    `
+  };
+}
+
+// Try it!
+const bitcoinStats = await getBitcoinStats();
+console.log(bitcoinStats.summary);
+```
+
+**This is REAL Bitcoin data!** You're querying the actual blockchain! 🌐
+
+---
+
+## 🧠 What You Just Built
+
+**You coded:**
+- ✅ Real-time Bitcoin price checker
+- ✅ USD converter (BTC ↔ USD)
+- ✅ UTXO wallet simulator (how Bitcoin really works!)
+- ✅ Live blockchain stats viewer
+
+**That's more than most people know about Bitcoin!** 🎓
+
+---
+
+## �📝 TL;DR (Quick Summary)
 
 **Why Bitcoin exists:**
 - 2008 crisis → Banks failed → People lost money → Need system without banks
@@ -492,7 +699,7 @@ const supplyDemand = {
 
 [← Chapter 01](Chapter-01-Blockchain-Fundamentals.md) | [Index](../Index.md) | [Next: Ethereum →](Chapter-03-Ethereum-Smart-Contracts.md)
 
-*Chapter 2/7 • For JavaScript Developers • Oct 2025*
+*Chapter 2/8 • Bitcoin Changed Everything! 🚀*
 - You have $50,000 in your savings account
 - You've been saving for years to buy a house
 - One morning, you wake up to this news:
